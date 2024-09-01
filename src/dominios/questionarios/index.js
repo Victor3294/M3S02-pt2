@@ -26,17 +26,68 @@ const schemaDeleteQuestionario = yup.object({
     }),
 })
 
-questionariosRouter.use(garantirAutenticacaoRBAC('criador'))
+// questionariosRouter.use(garantirAutenticacaoRBAC('criador'))
 
-questionariosRouter.get('/', questionariosControllers.index)
+questionariosRouter.get('/', questionariosControllers.index 
+    /*
+        #swagger.tags = ['Questionarios']
+        #swagger.description = 'Endpoint para listar questionarios cadastrados'
+        #swagger.responses[200] = {
+                description: 'Lista de questionarios obtida com sucesso.'
+        }
+        #swagger.responses[404] = {
+            description: 'Nenhum questionario encontrado.'
+        }
+    */
+)
 
-questionariosRouter.post('/', validarSchema(schemaPostQuestionario), questionariosControllers.create)
+questionariosRouter.post('/', validarSchema(schemaPostQuestionario), questionariosControllers.create
+/*
+        #swagger.tags = ['Questionarios']
+        #swagger.description = 'Endpoint para cadastrar um novo questionario'
+        #swagger.parameters.['CriarUsuario'] = {
+            in: 'body',
+            description: 'Dados do Usuário',
+            required: 'true',
+                schema: {
+                    $titulo: "Titulo do questionario",
+                    $descricao: "Descrição do questionario",
+                    $perguntas: "lista das perguntas do questionario"
+                }
+        }
+        #swagger.responses[201] = {
+                description: 'Questionario cadastrado com sucesso.'
+        }
+        #swagger.responses[400] = {
+            description: 'Dados inválidos'
+        }
+    */
+)
 
 questionariosRouter
 .delete(
     '/:id', 
     validarSchema(schemaDeleteQuestionario), 
     questionariosControllers.delete
+    /*
+        #swagger.tags = ['Questionarios']
+        #swagger.description = 'Endpoint para excluir questionarios cadastrados'
+        #swagger.parameters['id'] = {
+            in: 'path',
+            name: 'id',
+            description: 'id do questionario a ser excluido',
+            type: 'string'
+        } 
+        #swagger.responses[200] = {
+                description: 'Questionario excluido com sucesso.'
+        }
+        #swagger.responses[400] = {
+            description: 'id invalido'
+        }
+        #swagger.responses[404] = {
+            description: 'Nenhum questionario encontrado com esse id.'
+        }
+    */
 )
 
 module.exports = questionariosRouter
