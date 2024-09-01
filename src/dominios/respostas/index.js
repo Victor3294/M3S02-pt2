@@ -29,8 +29,8 @@ const respostasControllers = new RespostasControllers()
 // respostasRouter.use(garantirAutenticacaoRBAC('criador'))
 
 // respostasRouter.get('/', respostasControllers.index)
-respostasRouter.use(garantirAutenticacao)
-respostasRouter.post('/:perguntaId', respostasControllers.create)
+respostasRouter.use(garantirAutenticacaoRBAC('estudante'))
+respostasRouter.post('/:perguntaId',  respostasControllers.create)
 
 // respostasRouter
 // .delete(

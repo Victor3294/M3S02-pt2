@@ -49,7 +49,7 @@ function garantirAutenticacaoRBAC(permissaoParametro) {
             const decoded = verify(token, jwtSecret)
     
             const { sub, permissao } = decoded;
-            
+            console.log(permissao)            
             if(permissao !== permissaoParametro) throw new Error("usuario não possui permissão para essa operação")
     
             request.usuario = {
@@ -58,7 +58,7 @@ function garantirAutenticacaoRBAC(permissaoParametro) {
             }
             next()
         } catch (error) {
-            throw new Error('JWT token não encontrado')
+            throw new Error(error)
         }
     }
 }
