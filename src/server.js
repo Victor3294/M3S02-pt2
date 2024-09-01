@@ -1,26 +1,38 @@
-const express = require('express')
-const UsuariosControllers = require('./dominios/usuarios/usuarios.controllers')
+require('dotenv').config()
 
+const database = require('./database/config')
+const express = require('express')
+
+
+const usuarioRouter = require('./dominios/usuarios')
+const questionariosRouter = require('./dominios/questionarios')
+const sessionsRouter = require('./dominios/sessions')
+const respostasRouter = require('./dominios/respostas')
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./doc.swagger.json')
+const { garantirAutenticacao, garantirAutenticacaoRBAC } = require('./middlewares/garantirAutenticacao')
 
 const app = express()
 /** Config */
 app.use(express.json()) // middleware => interceptador
 
-const usuariosControllers = new UsuariosControllers()
+/** DEFINIÇÃO DE ROTAS */
 
-/** 
- * RESPONSAVEL APENAS POR CRIAR AS ROTAS E O SERVIDOR
- */
-/** ROTAS USUÁRIOS */
-app.get('/usuarios', usuariosControllers.index)
-app.post('/usuarios', usuariosControllers.create)
-app.delete('/usuarios/:id', usuariosControllers.delete)
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+app.use('/usuarios', usuarioRouter)
+app.use('/sessions', sessionsRouter)
+app.use('/questionarios',garantirAutenticacao, garantirAutenticacaoRBAC('criador') ,  questionariosRouter)
+app.use('/respostas', garantirAutenticacao, garantirAutenticacaoRBAC('estudante'), respostasRouter)
 
-// HTTP METHOD = GET + URL => ALGUM RECRUSO 
+async function iniciarServidor() {
 
-/** criar usuario */
+    await database.authenticate()
+    console.log("Banco de dados foi incializado com sucesso!")
 
+    app.listen(3333, () => {
 
-app.listen(3333, () => {
-    console.log("Servidor rodando na porta 3333")
-})
+        console.log("Servidor rodando na porta 3333")
+    })
+}
+
+iniciarServidor()

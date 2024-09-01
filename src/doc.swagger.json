@@ -1,0 +1,320 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API Questionarios Simplificados",
+    "description": "Documentação da API Questionarios Simplificados usando express e sequelize",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3333",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Bearer <token>"
+    }
+  },
+  "paths": {
+    "/usuarios/": {
+      "get": {
+        "tags": [
+          "Usuários"
+        ],
+        "description": "Endpoint para listar usuarios cadastrados",
+        "responses": {
+          "200": {
+            "description": "Lista de usuários obtida com sucesso."
+          },
+          "404": {
+            "description": "Nenhum usuário encontrado."
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Usuários"
+        ],
+        "description": "Endpoint para cadastrar usuarios",
+        "parameters": [
+          {
+            "name": "CriarUsuario",
+            "in": "body",
+            "description": "Dados do Usuário",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string",
+                  "example": "Usuário X"
+                },
+                "sobrenome": {
+                  "type": "string",
+                  "example": "sobrenome do Usuario X"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "email@email.com"
+                },
+                "senha": {
+                  "type": "string",
+                  "example": "senha"
+                },
+                "permissao": {
+                  "type": "string",
+                  "example": "estudante / criador"
+                }
+              },
+              "required": [
+                "nome",
+                "sobrenome",
+                "email",
+                "senha",
+                "permissao"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso"
+          },
+          "400": {
+            "description": "Dados Inválidos"
+          }
+        }
+      }
+    },
+    "/usuarios/{id}": {
+      "delete": {
+        "tags": [
+          "Usuários"
+        ],
+        "description": "Endpoint para deletar usuarios",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "id do usuário que vai ser excluido"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Usuário excluido com sucesso"
+          },
+          "400": {
+            "description": "Id invalido"
+          },
+          "404": {
+            "description": "Id não encontrado ou inexistente"
+          }
+        }
+      }
+    },
+    "/sessions/": {
+      "post": {
+        "tags": [
+          "Session"
+        ],
+        "description": "Endpoint para fazer login",
+        "parameters": [
+          {
+            "name": "FazerLogin",
+            "in": "body",
+            "description": "Dados do Usuário",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "email@email.com"
+                },
+                "senha": {
+                  "type": "string",
+                  "example": "senha"
+                }
+              },
+              "required": [
+                "email",
+                "senha"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login feito com sucesso."
+          },
+          "400": {
+            "description": "Dados Invalidos."
+          }
+        }
+      }
+    },
+    "/questionarios/": {
+      "get": {
+        "tags": [
+          "Questionarios"
+        ],
+        "description": "Endpoint para listar questionarios cadastrados",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de questionarios obtida com sucesso."
+          },
+          "404": {
+            "description": "Nenhum questionario encontrado."
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Questionarios"
+        ],
+        "description": "Endpoint para cadastrar um novo questionario",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "CriarUsuario",
+            "in": "body",
+            "description": "Dados do Usuário",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "titulo": {
+                  "type": "string",
+                  "example": "Titulo do questionario"
+                },
+                "descricao": {
+                  "type": "string",
+                  "example": "Descrição do questionario"
+                },
+                "perguntas": {
+                  "type": "string",
+                  "example": "lista das perguntas do questionario"
+                }
+              },
+              "required": [
+                "titulo",
+                "descricao",
+                "perguntas"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Questionario cadastrado com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos"
+          }
+        }
+      }
+    },
+    "/questionarios/{id}": {
+      "delete": {
+        "tags": [
+          "Questionarios"
+        ],
+        "description": "Endpoint para excluir questionarios cadastrados",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "id do questionario a ser excluido"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Questionario excluido com sucesso."
+          },
+          "400": {
+            "description": "id invalido"
+          },
+          "404": {
+            "description": "Nenhum questionario encontrado com esse id."
+          }
+        }
+      }
+    },
+    "/respostas/{perguntaId}": {
+      "post": {
+        "tags": [
+          "Respostas"
+        ],
+        "description": "Endpoint para cadastrar respostas",
+        "parameters": [
+          {
+            "name": "perguntaId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "id da pergunta que vai ser respondida"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "CriarResposta",
+            "in": "body",
+            "description": "Dados da resposta",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "conteudo": {
+                  "type": "string",
+                  "example": "Conteudo da resposta"
+                }
+              },
+              "required": [
+                "conteudo"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Pergunta cadastrada com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ]
+}
